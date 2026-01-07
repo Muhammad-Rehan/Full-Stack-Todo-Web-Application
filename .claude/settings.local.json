@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(frontend-architect)",
+      "Bash(pip install redis)",
+      "Bash(del \"docker-compose.yml\" \"docker-compose.prod.yml\")",
+      "Bash(powershell Remove-Item \"docker-compose.yml\", \"docker-compose.prod.yml\")",
+      "Bash(findstr docker)"
+    ]
+  }
+}

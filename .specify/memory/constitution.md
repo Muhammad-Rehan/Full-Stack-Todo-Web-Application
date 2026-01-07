@@ -1,55 +1,44 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+Version change: N/A -> 1.0.0
+List of modified principles: None (new constitution based on user input)
+Added sections: All principles and sections based on user input
+Removed sections: Template placeholders
+Templates requiring updates:
+- .specify/templates/plan-template.md ⚠ pending (Constitution Check section needs alignment)
+- .specify/templates/spec-template.md ⚠ pending
+- .specify/templates/tasks-template.md ⚠ pending
+Follow-up TODOs: None
+-->
+# Todo Full-Stack Web Application (Phase II) Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Spec-Driven Development
+All development must follow the Agentic Dev Stack workflow. No implementation without approved spec, plan, and tasks.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Code Quality & Architecture
+Frontend and backend must follow clean, modular, and maintainable design. Clear separation between UI, API, business logic, and data access. Monorepo structure must align with Spec-Kit Plus conventions.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### API Correctness & Consistency
+RESTful APIs must strictly follow defined endpoints and HTTP semantics. All responses must be predictable, validated, and user-scoped. No endpoint may bypass authentication or authorization rules.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Authentication & Security
+All API requests must require a valid JWT token. JWT verification must be enforced on every backend request. Users must only access and modify their own tasks. Shared JWT secret must be consistently applied across frontend and backend.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Data Integrity & Persistence
+All task data must be stored in Neon Serverless PostgreSQL. ORM models must accurately represent database schema. Task ownership must be enforced at the database query level.
 
-### [PRINCIPLE_6_NAME]
+### User Experience Consistency
+Frontend must provide a responsive, intuitive, and consistent UI. All five core features must behave uniformly across users. Clear feedback must be provided for success, error, and loading states.
 
+## Performance & Scalability
+APIs must respond efficiently under normal multi-user load. Database queries must be optimized and scoped by user. Stateless backend behavior must be preserved via JWT auth.
 
-[PRINCIPLE__DESCRIPTION]
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Error Handling & Reliability
+Unauthorized requests must return proper HTTP status codes. Invalid input and edge cases must be handled gracefully. System must not expose internal errors or sensitive data.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+Deterministic Behavior: Same authenticated request must always produce the same result. No hidden state or cross-user side effects are allowed. Reviewability & Auditability: Each phase must be traceable from spec to implementation. Code and structure must be easy to review and reason about.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-30 | **Last Amended**: 2025-12-30

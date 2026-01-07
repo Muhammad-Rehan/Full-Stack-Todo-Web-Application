@@ -1,0 +1,173 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/modules/
+.pytest_cache/
+.hypothesis/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+mypy_cache/
+.pyre/
+.pytype/
+cython_debug/
+
+# Virtual Environment
+ENV/
+env/
+venv/
+.venv/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+ehthumbs.db
+Icon?
+.directory
+*.nfs
+*~
+.#*
+.~lock*
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+.sass-cache/
+.happypack/
+.release/
+.tmp/
+temp/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.cov/
+coverage.xml
+*.coverage
+
+# Documentation
+docs/_build/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Node.js (for frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.next/
+out/
+coverage/
+.nyc_output/
+jspm_packages/
+typings/
+.commit/
+.nuxt/
+.vuepress/dist
+.client
+.server
+
+# Local development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# FastAPI specific
+*.db-shm
+*.db-wal
+
+# Secrets and environment variables
+.env.production
+.env.staging
+.env.backup
+*.env.bak
+*.backup
+
+# Next.js specific additional
+.next/cache/
+.out/
+.next/static/chunks/pages/
+BUILD_ID
+
+# Lock files
+yarn.lock
+pnpm-lock.yaml
+
+# Dependency directories
+.pnp/
+
+# Production builds
+public/build/
+static/media/
+.svelte-kit/
+
+# Docker
+.dockerenv
+*.dockerignore
+
+# Additional OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Security and secrets
+*.key
+*.pem
+*.p12
+*.crt
+*.cer
+*.der
+secrets.json
+*.awslambda-task-root
+aws-exports.js
+config.private.json
