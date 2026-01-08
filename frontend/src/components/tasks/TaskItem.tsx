@@ -36,9 +36,9 @@ const TaskItemComponent = ({ task, onDelete, onToggle }: TaskItemProps) => {
   };
 
   return (
-    <li className="p-4 hover:bg-gray-50" role="listitem">
+    <div className="p-4" role="listitem">
       {isEditing ? (
-        <div className="border rounded p-3 bg-white" role="form" aria-label={`Editing task: ${task.title}`}>
+        <div className="border rounded-lg p-4 bg-white shadow-sm" role="form" aria-label={`Editing task: ${task.title}`}>
           <label htmlFor="edit-title" className="sr-only">Task Title</label>
           <input
             id="edit-title"
@@ -80,75 +80,76 @@ const TaskItemComponent = ({ task, onDelete, onToggle }: TaskItemProps) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-start sm:items-center">
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => onToggle(task.id)}
-              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5 sm:mt-0"
-              id={`task-checkbox-${task.id}`}
-              aria-label={task.completed ? `Mark task "${task.title}" as incomplete` : `Mark task "${task.title}" as complete`}
-            />
-            <div className="ml-3 flex-1 min-w-0">
-              <label
-                htmlFor={`task-checkbox-${task.id}`}
-                className={`text-sm font-medium block ${
-                  task.completed ? 'text-gray-500 line-through' : 'text-gray-900'
-                }`}
-              >
-                {task.title}
-              </label>
-              {task.description && (
-                <p className="text-sm text-gray-500 mt-1 truncate" aria-label={`Description: ${task.description}`}>{task.description}</p>
-              )}
+        <div className={`border rounded-lg p-4 shadow-sm transition-all duration-200 ${task.completed ? 'bg-gray-50' : 'bg-white hover:shadow-md'}`}>
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+            <div className="flex items-start">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => onToggle(task.id)}
+                className="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-0.5 cursor-pointer"
+                id={`task-checkbox-${task.id}`}
+                aria-label={task.completed ? `Mark task "${task.title}" as incomplete` : `Mark task "${task.title}" as complete`}
+              />
+              <div className="ml-3 flex-1 min-w-0">
+                <label
+                  htmlFor={`task-checkbox-${task.id}`}
+                  className={`text-base font-medium block ${
+                    task.completed ? 'text-gray-500 line-through' : 'text-gray-900'
+                  }`}
+                >
+                  {task.title}
+                </label>
+                {task.description && (
+                  <p className="text-sm text-gray-600 mt-1" aria-label={`Description: ${task.description}`}>{task.description}</p>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-between sm:justify-end space-x-2">
-            <span className="text-xs text-gray-500 sm:hidden" aria-label={`Created on ${new Date(task.created_at).toLocaleDateString()}`}>
-              {new Date(task.created_at).toLocaleDateString()}
-            </span>
-            <span className="hidden sm:block text-xs text-gray-500" aria-label={`Created on ${new Date(task.created_at).toLocaleDateString()}`}>
-              {new Date(task.created_at).toLocaleDateString()}
-            </span>
-            <button
-              onClick={() => setIsEditing(true)}
-              className="text-blue-600 hover:text-blue-900"
-              aria-label={`Edit task "${task.title}"`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => onDelete(task.id)}
-              className="text-red-600 hover:text-red-900"
-              aria-label={`Delete task "${task.title}"`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+            <div className="flex flex-col sm:flex-row items-end sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
+              <span className="text-xs text-gray-500 self-start sm:self-auto" aria-label={`Created on ${new Date(task.created_at).toLocaleDateString()}`}>
+                {new Date(task.created_at).toLocaleDateString()}
+              </span>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
+                  aria-label={`Edit task "${task.title}"`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => onDelete(task.id)}
+                  className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50"
+                  aria-label={`Delete task "${task.title}"`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </li>
+    </div>
   );
 }
 

@@ -59,7 +59,7 @@ const TaskListComponent = () => {
   }
 
   return (
-    <div className="bg-white shadow sm:rounded-md">
+    <div className="bg-white shadow rounded-lg">
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="text-lg font-medium">Tasks</h3>
 
@@ -90,16 +90,20 @@ const TaskListComponent = () => {
           No tasks found.
         </div>
       ) : (
-        <ul className="divide-y">
-          {filteredTasks.map(task => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              onDelete={deleteTask}
-              onToggle={toggleTaskCompletion}
-            />
-          ))}
-        </ul>
+        <div className="p-4">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredTasks.map(task => (
+              <li key={task.id}>
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  onDelete={deleteTask}
+                  onToggle={toggleTaskCompletion}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

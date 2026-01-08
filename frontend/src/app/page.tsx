@@ -188,7 +188,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="py-6 text-center text-gray-500 text-sm border-t border-gray-200 mt-auto">
-        © {new Date().getFullYear()} TaskFlow. All rights reserved.
+        © {new Date().getFullYear()} TaskFlow. Made by Muhammad Rehan. All rights reserved.
       </footer>
     </div>
   );
