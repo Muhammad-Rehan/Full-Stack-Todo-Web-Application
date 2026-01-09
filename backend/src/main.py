@@ -22,6 +22,8 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://muhammad-rehan.github.io",  # GitHub Pages deployment
+    "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application",  # Specific GitHub Pages path
 ]
 
 # Ensure no duplicates and handle potential None values

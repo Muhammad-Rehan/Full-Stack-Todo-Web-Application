@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     jwt_access_token_expire_minutes: int = 30
 
     # Frontend
-    frontend_url: str = "http://localhost:3000"
+    frontend_url: str = "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application"
 
     # Redis
     redis_host: str = "localhost"
