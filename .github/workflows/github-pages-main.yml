@@ -1,0 +1,53 @@
+name: Deploy to GitHub Pages from Main
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Build for GitHub Pages
+      run: |
+        cd frontend
+        npm run build
+
+    - name: Prepare for docs deployment
+      run: |
+        rm -rf temp-docs
+        mkdir -p temp-docs
+        cp -r frontend/out/* temp-docs/
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Deploy to docs folder on main branch
+      run: |
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git fetch
+        git checkout main
+        rm -rf docs
+        mkdir docs
+        cp -r temp-docs/* docs/
+        git add docs/
+        if ! git diff --cached --quiet; then
+          git commit -m "Update GitHub Pages docs [skip ci]"
+          git push
+        else
+          echo "No changes to commit"
+        fi
