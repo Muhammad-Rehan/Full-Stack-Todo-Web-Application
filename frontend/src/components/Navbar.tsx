@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useApp } from '@/contexts/AppContext';
+import { useApp } from '../contexts/AppContext';
 
 const Navbar = () => {
   const { user, signOut } = useApp();
