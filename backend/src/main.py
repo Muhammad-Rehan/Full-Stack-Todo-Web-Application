@@ -45,8 +45,10 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=ALLOWED_ORIGINS,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["*"],
+        # Allow all headers including authorization
+        allow_origin_regex=r"https://.*\.github\.io(/.*)?",
     )
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
 
