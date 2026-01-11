@@ -9,9 +9,19 @@ import os
 # Add the backend/src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-
+# Define the handler at module level to satisfy Vercel's pattern detection
 def handler(event, context):
-    """Vercel serverless function handler"""
+    """
+    Vercel serverless function handler
+
+    Args:
+        event: The event data passed by Vercel/AWS
+        context: The context object passed by Vercel/AWS
+
+    Returns:
+        The response from the FastAPI application
+    """
+    # Import inside the function to avoid import-time issues
     from mangum import Mangum
     from src.main import create_app
 
@@ -21,3 +31,6 @@ def handler(event, context):
     # Create and return the response using Mangum
     mangum_handler = Mangum(app)
     return mangum_handler(event, context)
+
+# Export the handler to make it available to Vercel
+__all__ = ['handler']
