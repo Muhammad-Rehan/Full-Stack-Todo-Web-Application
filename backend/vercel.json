@@ -1,23 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.py": {
-      "runtime": "@vercel/python@4.3.1",
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/index.py",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"]
+      "dest": "api/index.py"
     }
-  ],
-  "env": {
-    "DATABASE_URL": "$DATABASE_URL",
-    "FRONTEND_URL": "$FRONTEND_URL",
-    "SECRET_KEY": "$SECRET_KEY",
-    "ALGORITHM": "$ALGORITHM",
-    "ACCESS_TOKEN_EXPIRE_MINUTES": "$ACCESS_TOKEN_EXPIRE_MINUTES"
-  }
+  ]
 }
