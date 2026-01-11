@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.11"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api.py"
+    }
+  ],
+  "functions": {
+    "api.py": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "DATABASE_URL": "$DATABASE_URL",
+    "FRONTEND_URL": "$FRONTEND_URL",
+    "SECRET_KEY": "$SECRET_KEY",
+    "ALGORITHM": "$ALGORITHM",
+    "ACCESS_TOKEN_EXPIRE_MINUTES": "$ACCESS_TOKEN_EXPIRE_MINUTES"
+  }
+}
