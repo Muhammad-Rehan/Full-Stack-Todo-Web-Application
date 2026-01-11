@@ -5,7 +5,12 @@
       "Bash(pip install redis)",
       "Bash(del \"docker-compose.yml\" \"docker-compose.prod.yml\")",
       "Bash(powershell Remove-Item \"docker-compose.yml\", \"docker-compose.prod.yml\")",
-      "Bash(findstr docker)"
+      "Bash(findstr docker)",
+      "Bash(git add backend/vercel.json backend/api.py backend/requirements.txt)",
+      "Bash(git commit -m \"Fix runtime version format in Vercel configuration\n\n- Update runtime to use proper format @vercel/python@4.3.1\n- Replace generic python3.11 with specific versioned runtime\")",
+      "Bash(git push origin main)",
+      "Bash(git add backend/api/index.py backend/vercel.json)",
+      "Bash(git add -A)"
     ]
   }
 }
