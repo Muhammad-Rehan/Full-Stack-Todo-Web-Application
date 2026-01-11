@@ -24,7 +24,6 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://muhammad-rehan.github.io",
     "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application",
-    "https://full-stack-todo-web-application-fro.vercel.app",
 ]
 
 def create_app() -> FastAPI:
