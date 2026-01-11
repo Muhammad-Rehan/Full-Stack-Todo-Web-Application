@@ -43,7 +43,6 @@ def create_app() -> FastAPI:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-        allow_origin_regex=r"https://.*\.github\.io",
     )
 
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
