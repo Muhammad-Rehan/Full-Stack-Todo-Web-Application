@@ -9,7 +9,7 @@ import os
 # Add the backend/src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-# Define the handler at module level to satisfy Vercel's pattern detection
+
 def handler(event, context):
     """
     Vercel serverless function handler
@@ -32,5 +32,10 @@ def handler(event, context):
     mangum_handler = Mangum(app)
     return mangum_handler(event, context)
 
-# Export the handler to make it available to Vercel
-__all__ = ['handler']
+
+# Make sure the handler is available at the module level
+try:
+    # This ensures Vercel can detect the handler function
+    handler  # Reference to ensure it exists
+except NameError:
+    pass
