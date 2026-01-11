@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, select
 from uuid import UUID
 from src.main import app
-from src.database import engine
+from src.database import get_engine
 from src.models.user import User
 from src.models.task import Task
 from src.auth.utils import create_access_token
@@ -18,7 +18,8 @@ def client():
 @pytest.fixture
 def setup_test_data():
     # Create test users and tasks
-    with Session(engine) as session:
+    db_engine = get_engine()
+    with Session(db_engine) as session:
         # Clear existing data
         session.exec(select(User))
         session.exec(select(Task))

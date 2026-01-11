@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session
 from typing import Generator
-from ..database import get_session, engine
+from ..database import get_session, get_engine
 from ..auth.middleware import JWTBearer
 import uuid
 
@@ -14,6 +14,7 @@ def get_db_session() -> Generator[Session, None, None]:
     """
     Get database session for dependency injection
     """
+    engine = get_engine()
     with Session(engine) as session:
         yield session
 
