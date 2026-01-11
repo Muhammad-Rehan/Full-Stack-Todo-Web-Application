@@ -1,26 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.11"
-      }
+  "functions": {
+    "api.py": {
+      "runtime": "python3.11",
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
       "dest": "api.py"
     }
   ],
-  "functions": {
-    "api.py": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
   "env": {
     "DATABASE_URL": "$DATABASE_URL",
     "FRONTEND_URL": "$FRONTEND_URL",
