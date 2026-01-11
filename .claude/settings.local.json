@@ -10,7 +10,8 @@
       "Bash(git commit -m \"Fix runtime version format in Vercel configuration\n\n- Update runtime to use proper format @vercel/python@4.3.1\n- Replace generic python3.11 with specific versioned runtime\")",
       "Bash(git push origin main)",
       "Bash(git add backend/api/index.py backend/vercel.json)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(git commit -m \"Restructure backend for Vercel deployment\n\n- Move api handler to api/index.py to match Vercel''s expected structure\n- Update vercel.json to reference the correct file path\n- Adjust import paths in the handler to properly reference the src directory\n- Remove the old api.py file from root directory\")"
     ]
   }
 }
