@@ -3,9 +3,6 @@ from fastapi import FastAPI
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import Response
-from starlette.requests import Request
 import logging
 
 from .config import settings
@@ -18,18 +15,12 @@ from .middleware.performance import PerformanceMonitoringMiddleware
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# List of allowed origins for frontend
+# ✅ CORS origins must be ONLY scheme + domain (+ port)
 ALLOWED_ORIGINS = [
-    settings.frontend_url if hasattr(settings, 'frontend_url') and settings.frontend_url else "http://localhost:3000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://muhammad-rehan.github.io",
-    "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application",
 ]
-
-# Ensure no duplicates and handle potential None values
-ALLOWED_ORIGINS = [origin for origin in ALLOWED_ORIGINS if origin is not None]
-ALLOWED_ORIGINS = list(set(ALLOWED_ORIGINS))
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -38,10 +29,7 @@ def create_app() -> FastAPI:
         debug=settings.debug,
     )
 
-    # Middleware
-    app.add_middleware(PerformanceMonitoringMiddleware)
-
-    # CORS middleware
+    # ✅ CORS middleware MUST be registered FIRST
     app.add_middleware(
         CORSMiddleware,
         allow_origins=ALLOWED_ORIGINS,
@@ -50,11 +38,14 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # ✅ Custom middleware AFTER CORS
+    app.add_middleware(PerformanceMonitoringMiddleware)
+
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
 
     # Routers
-    app.include_router(auth_router, prefix="/api")  # Add /api prefix to match frontend expectation
-    app.include_router(tasks_router, prefix="/api")  # Add /api prefix to match frontend expectation
+    app.include_router(auth_router, prefix="/api")
+    app.include_router(tasks_router, prefix="/api")
 
     # Startup event
     @app.on_event("startup")
@@ -64,8 +55,8 @@ def create_app() -> FastAPI:
             engine = get_engine()
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-            logger.info("Database connection successful.")
 
+            logger.info("Database connection successful.")
             create_db_and_tables()
             logger.info("Database tables ensured.")
         except OperationalError as e:
@@ -83,10 +74,10 @@ def create_app() -> FastAPI:
     return app
 
 
-# Instantiate the FastAPI app
+# Instantiate app
 app = create_app()
 
-# Run using uvicorn if executed directly
+# Local dev runner
 if __name__ == "__main__":
     import uvicorn
 

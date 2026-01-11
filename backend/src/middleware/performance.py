@@ -3,11 +3,14 @@ import logging
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from ..config import settings
 
 
 class PerformanceMonitoringMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        # ✅ Do NOT touch CORS preflight requests
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         start_time = time.time()
 
         response = await call_next(request)
