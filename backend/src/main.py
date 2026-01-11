@@ -20,11 +20,16 @@ logger = logging.getLogger(__name__)
 
 # List of allowed origins for frontend
 ALLOWED_ORIGINS = [
+    settings.frontend_url if hasattr(settings, 'frontend_url') and settings.frontend_url else "http://localhost:3000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://muhammad-rehan.github.io",
     "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application",
 ]
+
+# Ensure no duplicates and handle potential None values
+ALLOWED_ORIGINS = [origin for origin in ALLOWED_ORIGINS if origin is not None]
+ALLOWED_ORIGINS = list(set(ALLOWED_ORIGINS))
 
 def create_app() -> FastAPI:
     app = FastAPI(
