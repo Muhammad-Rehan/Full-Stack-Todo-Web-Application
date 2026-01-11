@@ -20,18 +20,10 @@ logger = logging.getLogger(__name__)
 
 # List of allowed origins for frontend
 ALLOWED_ORIGINS = [
-    settings.frontend_url if hasattr(settings, 'frontend_url') and settings.frontend_url else "http://localhost:3000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "https://muhammad-rehan.github.io",  # GitHub Pages deployment
-    "https://muhammad-rehan.github.io/Full-Stack-Todo-Web-Application",  # Specific GitHub Pages path
+    "https://muhammad-rehan.github.io",
 ]
-
-# Ensure no duplicates and handle potential None values
-ALLOWED_ORIGINS = [origin for origin in ALLOWED_ORIGINS if origin is not None]
-ALLOWED_ORIGINS = list(set(ALLOWED_ORIGINS))
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -48,33 +40,11 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=ALLOWED_ORIGINS,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_methods=["*"],
         allow_headers=["*"],
-        # Allow all headers including authorization
-        allow_origin_regex=r"https://.*\.github\.io(/.*)?",
+        allow_origin_regex=r"https://.*\.github\.io",
     )
 
-    # Additional custom middleware to ensure CORS headers are set
-    async def cors_middleware(request: Request, call_next):
-        response = await call_next(request)
-
-        # Always set CORS headers for all responses
-        origin = request.headers.get("origin")
-        if origin and any(allowed_origin in origin or
-                         origin.endswith(allowed_domain) for allowed_origin in ALLOWED_ORIGINS
-                         for allowed_domain in [".github.io", "muhammad-rehan.github.io"]):
-            response.headers["Access-Control-Allow-Origin"] = origin
-        else:
-            # Fallback to specific allowed origins
-            response.headers["Access-Control-Allow-Origin"] = "https://muhammad-rehan.github.io"
-
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Headers"] = request.headers.get("Access-Control-Request-Headers", "*")
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-
-        return response
-
-    app.middleware("http")(cors_middleware)
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
 
     # Routers
