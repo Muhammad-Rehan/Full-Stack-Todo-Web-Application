@@ -9,7 +9,7 @@ from starlette.requests import Request
 import logging
 
 from .config import settings
-from .database import engine, create_db_and_tables
+from .database import get_engine, create_db_and_tables
 from .api.auth import router as auth_router
 from .api.tasks import router as tasks_router
 from .middleware.performance import PerformanceMonitoringMiddleware
@@ -86,6 +86,7 @@ def create_app() -> FastAPI:
     def on_startup():
         logger.info("Testing database connection...")
         try:
+            engine = get_engine()
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
             logger.info("Database connection successful.")
