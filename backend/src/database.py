@@ -16,7 +16,6 @@ def get_engine():
     engine = create_engine(
         settings.database_url,
         echo=True,
-        pool_pre_ping=True,
         # Use smaller pool sizes for serverless
         pool_size=5,
         max_overflow=10,
