@@ -1,7 +1,7 @@
 # src/database.py
 from sqlmodel import Session, SQLModel
 from typing import Generator
-from api.config import settings       # <-- changed to absolute import
+from config import settings       # <-- changed to relative import for Vercel
 import logging
 
 logger = logging.getLogger(__name__)
@@ -42,8 +42,8 @@ def get_session() -> Generator[Session, None, None]:
 # Create Tables
 # ---------------------------------
 def create_db_and_tables() -> None:
-    from api.models.user import User   # <-- absolute import
-    from api.models.task import Task   # <-- absolute import
+    from models.user import User   # <-- relative import for Vercel
+    from models.task import Task   # <-- relative import for Vercel
 
     logger.info("Creating database tables if not present...")
     engine = get_engine()
