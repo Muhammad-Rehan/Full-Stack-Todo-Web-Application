@@ -1,156 +1,66 @@
-from datetime import datetime, timedelta
-from typing import Optional
+# src/api/auth.py
+from fastapi import APIRouter, Depends, HTTPException, status, Response
+from sqlmodel import Session
+from typing import Dict
+from datetime import timedelta
 
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from fastapi import HTTPException, status
-from sqlmodel import Session, select
+from api.models.user import UserCreate              # absolute import
+from api.auth.utils import create_access_token
+from api.database import get_session
+from api.config import settings
+from api.services.user_service import UserService
 
-from ..models.user import User
-from ..config import settings
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-
-# ------------------------------------------------------------------
-# Password hashing configuration
-# ------------------------------------------------------------------
-
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-)
-
-BCRYPT_MAX_BYTES = 72  # hard bcrypt limit
+# ✅ Explicit OPTIONS handler (NO dependencies)
+@router.options("/{path:path}")
+def preflight_handler(path: str):
+    return Response(status_code=200)
 
 
-def _truncate_password(password: str) -> str:
-    """
-    Safely truncate password to bcrypt's 72-byte limit.
-    Handles UTF-8 multi-byte characters correctly.
-    """
-    if not password:
-        return password
+@router.post("/signup", response_model=Dict[str, str])
+def signup(user_data: UserCreate, session: Session = Depends(get_session)):
+    user = UserService.create_user(session, user_data)
 
-    encoded = password.encode("utf-8")
+    access_token_expires = timedelta(
+        minutes=settings.jwt_access_token_expire_minutes
+    )
+    access_token = create_access_token(
+        data={"sub": str(user.user_id)},
+        expires_delta=access_token_expires,
+    )
 
-    if len(encoded) <= BCRYPT_MAX_BYTES:
-        return password
-
-    truncated = encoded[:BCRYPT_MAX_BYTES]
-
-    # Avoid cutting multi-byte characters
-    return truncated.decode("utf-8", errors="ignore")
-
-
-# ------------------------------------------------------------------
-# Password helpers
-# ------------------------------------------------------------------
-
-def get_password_hash(password: str) -> str:
-    """
-    Hash a password using bcrypt with safe truncation.
-    """
-    if not password:
-        raise ValueError("Password cannot be empty")
-
-    safe_password = _truncate_password(password)
-    return pwd_context.hash(safe_password)
+    return {
+        "user_id": str(user.user_id),
+        "email": user.email,
+        "token": access_token,
+    }
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verify a password against its bcrypt hash.
-    """
-    if not plain_password or not hashed_password:
-        return False
-
-    safe_password = _truncate_password(plain_password)
-    return pwd_context.verify(safe_password, hashed_password)
-
-
-# ------------------------------------------------------------------
-# Authentication helpers
-# ------------------------------------------------------------------
-
-def authenticate_user(
-    session: Session,
-    email: str,
-    password: str,
-) -> Optional[User]:
-    """
-    Authenticate user by email and password.
-    """
-    statement = select(User).where(User.email == email)
-    user = session.exec(statement).first()
+@router.post("/signin", response_model=Dict[str, str])
+def signin(user_data: UserCreate, session: Session = Depends(get_session)):
+    user = UserService.authenticate_user(
+        session,
+        user_data.email,
+        user_data.password,
+    )
 
     if not user:
-        return None
-
-    if not verify_password(password, user.password_hash):
-        return None
-
-    return user
-
-
-# ------------------------------------------------------------------
-# JWT helpers
-# ------------------------------------------------------------------
-
-def create_access_token(
-    data: dict,
-    expires_delta: Optional[timedelta] = None,
-) -> str:
-    """
-    Create a signed JWT access token.
-    """
-    to_encode = data.copy()
-
-    expire = (
-        datetime.utcnow() + expires_delta
-        if expires_delta
-        else datetime.utcnow()
-        + timedelta(minutes=settings.jwt_access_token_expire_minutes)
-    )
-
-    to_encode.update({"exp": expire})
-
-    return jwt.encode(
-        to_encode,
-        settings.jwt_secret_key,
-        algorithm=settings.jwt_algorithm,
-    )
-
-
-def verify_token(token: str) -> dict:
-    """
-    Decode and validate a JWT token.
-    """
-    try:
-        payload = jwt.decode(
-            token,
-            settings.jwt_secret_key,
-            algorithms=[settings.jwt_algorithm],
-        )
-        return payload
-    except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
+            detail="Incorrect email or password",
         )
 
+    access_token_expires = timedelta(
+        minutes=settings.jwt_access_token_expire_minutes
+    )
+    access_token = create_access_token(
+        data={"sub": str(user.user_id)},
+        expires_delta=access_token_expires,
+    )
 
-def get_current_user_from_token(token: str) -> dict:
-    """
-    Dependency helper used by protected routes.
-    """
-    payload = verify_token(token)
-
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    return payload
+    return {
+        "user_id": str(user.user_id),
+        "email": user.email,
+        "token": access_token,
+    }

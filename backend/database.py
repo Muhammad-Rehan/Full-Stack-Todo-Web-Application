@@ -1,7 +1,7 @@
 # src/database.py
 from sqlmodel import Session, SQLModel
 from typing import Generator
-from .config import settings
+from api.config import settings       # <-- changed to absolute import
 import logging
 
 logger = logging.getLogger(__name__)
@@ -42,8 +42,8 @@ def get_session() -> Generator[Session, None, None]:
 # Create Tables
 # ---------------------------------
 def create_db_and_tables() -> None:
-    from .models.user import User
-    from .models.task import Task
+    from api.models.user import User   # <-- absolute import
+    from api.models.task import Task   # <-- absolute import
 
     logger.info("Creating database tables if not present...")
     engine = get_engine()
