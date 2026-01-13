@@ -4,8 +4,9 @@ from uuid import UUID
 import json
 from datetime import datetime
 
-from backend.models.task import Task, TaskCreate, TaskUpdate, TaskRead
-from backend.cache.cache_service import cache_service
+from ..models.task import Task, TaskCreate, TaskUpdate, TaskRead
+from fastapi import HTTPException, status
+from ..cache.cache_service import cache_service
 
 
 def json_serializer(obj):

@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session
 from typing import Generator
-from backend.database import get_session, get_engine
-from backend.auth.middleware import JWTBearer
+from ..database import get_session, get_engine
+from ..auth.middleware import JWTBearer
 import uuid
 
 

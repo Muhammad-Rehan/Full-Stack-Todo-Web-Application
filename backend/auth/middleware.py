@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from backend.auth.utils import verify_token
+from .utils import verify_token
 from typing import Optional
 import re
 
