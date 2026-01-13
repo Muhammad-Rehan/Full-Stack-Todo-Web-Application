@@ -4,9 +4,17 @@ from uuid import UUID
 import json
 from datetime import datetime
 
-from ..models.task import Task, TaskCreate, TaskUpdate, TaskRead
+import sys
+import os
+
+# Add the parent directory to the Python path for Vercel deployment
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from models.task import Task, TaskCreate, TaskUpdate, TaskRead
 from fastapi import HTTPException, status
-from ..cache.cache_service import cache_service
+from cache.cache_service import cache_service
 
 
 def json_serializer(obj):

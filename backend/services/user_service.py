@@ -4,10 +4,17 @@ from uuid import UUID
 import json
 
 from fastapi import HTTPException, status
+import sys
+import os
 
-from ..models.user import User, UserCreate, UserRead
-from ..auth.utils import get_password_hash, verify_password
-from ..cache.cache_service import cache_service
+# Add the parent directory to the Python path for Vercel deployment
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from models.user import User, UserCreate, UserRead
+from auth.utils import get_password_hash, verify_password
+from cache.cache_service import cache_service
 
 
 class UserService:

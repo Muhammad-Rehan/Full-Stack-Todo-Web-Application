@@ -3,6 +3,13 @@ from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+import sys
+import os
+
+# Add the current directory's parent to the Python path for proper imports
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 from config import settings
 from database import get_engine, create_db_and_tables

@@ -1,8 +1,16 @@
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session
 from typing import Generator
-from ..database import get_session, get_engine
-from ..auth.middleware import JWTBearer
+import sys
+import os
+
+# Add the parent directory to the Python path for Vercel deployment
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from database import get_session, get_engine
+from auth.middleware import JWTBearer
 import uuid
 
 

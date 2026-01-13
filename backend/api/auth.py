@@ -2,12 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlmodel import Session
 from typing import Dict
 from datetime import timedelta
+import sys
+import os
 
-from ..models.user import UserCreate
-from ..auth.utils import create_access_token
-from ..database import get_session
-from ..config import settings
-from ..services.user_service import UserService
+# Add the parent directory to the Python path for Vercel deployment
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from models.user import UserCreate
+from auth.utils import create_access_token
+from database import get_session
+from config import settings
+from services.user_service import UserService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
