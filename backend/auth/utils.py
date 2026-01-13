@@ -6,8 +6,8 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from sqlmodel import Session, select
 
-from ..models.user import User
-from ..config import settings
+from backend.models.user import User
+from backend.config import settings
 
 # ------------------------------------------------------------------
 # Password hashing configuration

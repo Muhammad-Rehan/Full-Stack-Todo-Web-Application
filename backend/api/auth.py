@@ -3,11 +3,11 @@ from sqlmodel import Session
 from typing import Dict
 from datetime import timedelta
 
-from ..models.user import UserCreate
-from ..auth.utils import create_access_token
-from ..database import get_session
-from ..config import settings
-from ..services.user_service import UserService
+from backend.models.user import UserCreate
+from backend.auth.utils import create_access_token
+from backend.database import get_session
+from backend.config import settings
+from backend.services.user_service import UserService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

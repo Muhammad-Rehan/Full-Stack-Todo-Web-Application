@@ -5,9 +5,9 @@ import json
 
 from fastapi import HTTPException, status
 
-from ..models.user import User, UserCreate, UserRead
-from ..auth.utils import get_password_hash, verify_password
-from ..cache.cache_service import cache_service
+from backend.models.user import User, UserCreate, UserRead
+from backend.auth.utils import get_password_hash, verify_password
+from backend.cache.cache_service import cache_service
 
 
 class UserService:

@@ -4,11 +4,11 @@ from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from config import settings
-from database import get_engine, create_db_and_tables
-from api.auth import router as auth_router
-from api.tasks import router as tasks_router
-from middleware.performance import PerformanceMonitoringMiddleware
+from backend.config import settings
+from backend.database import get_engine, create_db_and_tables
+from backend.api.auth import router as auth_router
+from backend.api.tasks import router as tasks_router
+from backend.middleware.performance import PerformanceMonitoringMiddleware
 
 # Configure logger
 logging.basicConfig(level=logging.INFO)

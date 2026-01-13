@@ -4,9 +4,9 @@ from sqlmodel import Session
 from typing import List
 from uuid import UUID
 
-from services.task_service import TaskService
-from models.task import TaskCreate, TaskRead, TaskUpdate
-from api.dependencies import get_current_user_id, get_db_session
+from backend.services.task_service import TaskService
+from backend.models.task import TaskCreate, TaskRead, TaskUpdate
+from backend.api.dependencies import get_current_user_id, get_db_session
 
 router = APIRouter(tags=["Tasks"])
 
