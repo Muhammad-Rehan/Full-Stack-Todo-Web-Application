@@ -1,4 +1,4 @@
-# Main FastAPI app entry point
+# api/index.py
 from fastapi import FastAPI, Request, Response
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
@@ -30,7 +30,7 @@ def create_app() -> FastAPI:
     )
 
     # -------------------------------
-    # ✅ CORS middleware must come first
+    # CORS middleware must come first
     # -------------------------------
     app.add_middleware(
         CORSMiddleware,
@@ -41,14 +41,14 @@ def create_app() -> FastAPI:
     )
 
     # -------------------------------
-    # ✅ Global OPTIONS handler for preflight requests
+    # Global OPTIONS handler for preflight requests
     # -------------------------------
     @app.options("/{full_path:path}")
     async def preflight(full_path: str, request: Request):
         return Response(status_code=200)
 
     # -------------------------------
-    # ✅ Custom middleware (after CORS)
+    # Custom middleware (after CORS)
     # -------------------------------
     app.add_middleware(PerformanceMonitoringMiddleware)
 
@@ -58,7 +58,7 @@ def create_app() -> FastAPI:
     # -------------------------------
     # Routers
     # -------------------------------
-    app.include_router(auth_router, prefix="/api")  # /api/auth
+    app.include_router(auth_router, prefix="/api")   # /api/auth
     app.include_router(tasks_router, prefix="/api")  # /api/tasks
 
     # -------------------------------
@@ -71,7 +71,6 @@ def create_app() -> FastAPI:
             engine = get_engine()
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-
             logger.info("Database connection successful.")
             create_db_and_tables()
             logger.info("Database tables ensured.")
@@ -91,14 +90,14 @@ def create_app() -> FastAPI:
 
     return app
 
-
-# Instantiate app
+# Instantiate app (required by Vercel serverless)
 app = create_app()
 
+# -------------------------------
 # Local dev runner
+# -------------------------------
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(
         "api.index:app",
         host="0.0.0.0",
