@@ -1,15 +1,15 @@
-# src/main.py
+# main.py
 from fastapi import FastAPI, Request, Response
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from .config import settings
-from .database import get_engine, create_db_and_tables
-from .api.auth import router as auth_router
-from .api.tasks import router as tasks_router
-from .middleware.performance import PerformanceMonitoringMiddleware
+from config import settings
+from database import get_engine, create_db_and_tables
+from api.auth import router as auth_router
+from api.tasks import router as tasks_router
+from middleware.performance import PerformanceMonitoringMiddleware
 
 # Configure logger
 logging.basicConfig(level=logging.INFO)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "src.main:app",
+        "main:app",
         host="0.0.0.0",
         port=8000,
         reload=settings.debug,

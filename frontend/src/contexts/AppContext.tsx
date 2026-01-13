@@ -124,8 +124,8 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
 ======================= */
 
 interface AppContextType extends AppState {
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<any>;
+  signUp: (email: string, password: string) => Promise<any>;
   signOut: () => void;
   fetchTasks: () => Promise<void>;
   createTask: (taskData: Omit<Task, 'id' | 'user_id' | 'created_at'>) => Promise<void>;
@@ -182,6 +182,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           user: { user_id: data.user_id, email: data.email },
         },
       });
+
+      return data;
     } catch (err: any) {
       dispatch({ type: 'SET_ERROR', payload: err.message });
       throw err;
@@ -208,6 +210,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           user: { user_id: data.user_id, email: data.email },
         },
       });
+
+      return data;
     } catch (err: any) {
       dispatch({ type: 'SET_ERROR', payload: err.message });
       throw err;

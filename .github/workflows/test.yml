@@ -31,9 +31,9 @@ jobs:
     - name: Run tests
       run: |
         cd backend
-        poetry run pytest tests/ -v
+        poetry run pytest api/tests/ -v  # updated tests path if tests are inside api/
 
     - name: Run linting
       run: |
         cd backend
-        poetry run flake8 src/
+        poetry run flake8 api/          # updated linting path from src/ to api/

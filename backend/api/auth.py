@@ -11,15 +11,25 @@ from ..services.user_service import UserService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-
-# ✅ Explicit OPTIONS handler (NO dependencies)
+# -------------------------------
+# Explicit OPTIONS handler for CORS preflight
+# -------------------------------
 @router.options("/{path:path}")
 def preflight_handler(path: str):
+    """
+    Handles OPTIONS requests for CORS preflight.
+    """
     return Response(status_code=200)
 
 
+# -------------------------------
+# Signup endpoint
+# -------------------------------
 @router.post("/signup", response_model=Dict[str, str])
 def signup(user_data: UserCreate, session: Session = Depends(get_session)):
+    """
+    Register a new user and return access token.
+    """
     user = UserService.create_user(session, user_data)
 
     access_token_expires = timedelta(
@@ -37,8 +47,14 @@ def signup(user_data: UserCreate, session: Session = Depends(get_session)):
     }
 
 
+# -------------------------------
+# Signin endpoint
+# -------------------------------
 @router.post("/signin", response_model=Dict[str, str])
 def signin(user_data: UserCreate, session: Session = Depends(get_session)):
+    """
+    Authenticate a user and return JWT token.
+    """
     user = UserService.authenticate_user(
         session,
         user_data.email,
