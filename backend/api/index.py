@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,7 +6,7 @@ import logging
 import sys
 import os
 
-# Add the current directory's parent to the Python path for proper imports
+# Add the current directory's parent to the Python path
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
@@ -21,7 +21,7 @@ from middleware.performance import PerformanceMonitoringMiddleware
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# CORS origins — only scheme + domain (no paths)
+# Allowed CORS origins (NO paths)
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -36,7 +36,7 @@ def create_app() -> FastAPI:
     )
 
     # -------------------------------
-    # CORS middleware must come first
+    # CORS middleware (ONLY place CORS is handled)
     # -------------------------------
     app.add_middleware(
         CORSMiddleware,
@@ -47,25 +47,17 @@ def create_app() -> FastAPI:
     )
 
     # -------------------------------
-    # Global OPTIONS handler for preflight requests
-    # -------------------------------
-    @app.options("/{full_path:path}")
-    async def preflight(full_path: str, request: Request):
-        return Response(status_code=200)
-
-    # -------------------------------
-    # Custom middleware (after CORS)
+    # Custom middleware
     # -------------------------------
     app.add_middleware(PerformanceMonitoringMiddleware)
 
-    # Log allowed origins
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
 
     # -------------------------------
     # Routers
     # -------------------------------
-    app.include_router(auth_router, prefix="/api")   # /api/auth
-    app.include_router(tasks_router, prefix="/api")  # /api/tasks
+    app.include_router(auth_router, prefix="/api")
+    app.include_router(tasks_router, prefix="/api")
 
     # -------------------------------
     # Startup event
@@ -85,11 +77,11 @@ def create_app() -> FastAPI:
             logger.error("Database connection failed.")
             logger.error(str(e))
             raise RuntimeError(
-                "Cannot connect to database. Check DATABASE_URL, credentials, and host."
+                "Cannot connect to database. Check DATABASE_URL and credentials."
             ) from e
 
     # -------------------------------
-    # Health endpoint
+    # Health check
     # -------------------------------
     @app.get("/")
     def health():
@@ -98,5 +90,5 @@ def create_app() -> FastAPI:
     return app
 
 
-# Instantiate app (required by Vercel serverless)
+# Required for Vercel
 app = create_app()

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 from typing import Dict
 from datetime import timedelta
@@ -17,17 +17,6 @@ from config import settings
 from services.user_service import UserService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-# -------------------------------
-# Explicit OPTIONS handler for CORS preflight
-# -------------------------------
-@router.options("/{path:path}")
-def preflight_handler(path: str):
-    """
-    Handles OPTIONS requests for CORS preflight.
-    """
-    return Response(status_code=200)
-
 
 # -------------------------------
 # Signup endpoint
