@@ -171,3 +171,6 @@ secrets.json
 *.awslambda-task-root
 aws-exports.js
 config.private.json
+
+# Claude Code temporary files
+tmpclaude-*.cwd
