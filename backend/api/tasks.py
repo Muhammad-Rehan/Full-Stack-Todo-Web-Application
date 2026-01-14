@@ -13,12 +13,12 @@ router = APIRouter(tags=["Tasks"])
 # -------------------------------
 # Explicit OPTIONS handler for CORS preflight
 # -------------------------------
-@router.options("/{path:path}")
-def preflight_handler(path: str):
-    """
-    Handles OPTIONS requests for CORS preflight on all task endpoints.
-    """
-    return Response(status_code=200)
+# @router.options("/{path:path}")
+# def preflight_handler(path: str):
+#     """
+#     Handles OPTIONS requests for CORS preflight on all task endpoints.
+#     """
+#     return Response(status_code=200)
 
 
 # -------------------------------
