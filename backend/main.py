@@ -47,7 +47,20 @@ def create_app() -> FastAPI:
     # -------------------------------
     @app.options("/{full_path:path}")
     async def preflight(full_path: str, request: Request):
-        return Response(status_code=200)
+        # Return proper CORS headers for preflight
+        response = Response(status_code=200)
+        origin = request.headers.get("origin")
+        if origin and any(allowed_origin == origin or allowed_origin == "*" for allowed_origin in ALLOWED_ORIGINS):
+            response.headers["Access-Control-Allow-Origin"] = origin
+        else:
+            # If origin is not in allowed list, use first allowed origin (or handle as needed)
+            if ALLOWED_ORIGINS:
+                response.headers["Access-Control-Allow-Origin"] = ALLOWED_ORIGINS[0]
+
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Set-Cookie"
+        return response
 
     # -------------------------------
     # ✅ Custom middleware (after CORS)
