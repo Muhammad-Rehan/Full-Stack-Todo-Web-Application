@@ -16,11 +16,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # CORS origins — only scheme + domain (no paths)
+# Use the frontend_url from settings, plus localhost for development
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://muhammad-rehan.github.io",
 ]
+if settings.frontend_url:
+    ALLOWED_ORIGINS.append(settings.frontend_url)
 
 def create_app() -> FastAPI:
     app = FastAPI(
