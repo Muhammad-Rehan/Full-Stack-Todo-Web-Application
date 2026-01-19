@@ -56,8 +56,10 @@ def create_app() -> FastAPI:
     # -------------------------------
     # Routers
     # -------------------------------
-    app.include_router(auth_router, prefix="/api")
-    app.include_router(tasks_router, prefix="/api")
+    # CORRECT
+    app.include_router(auth_router, prefix="/auth")
+    app.include_router(tasks_router, prefix="/tasks")
+
 
     # -------------------------------
     # Startup event

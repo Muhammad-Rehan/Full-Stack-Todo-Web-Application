@@ -13,7 +13,7 @@ export interface Task {
 class ApiService {
   private baseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL ??
-    "https://todo-backend-delta-six.vercel.app/api";
+    "https://todo-backend-delta-six.vercel.app";
 
   private async request(
     endpoint: string,
