@@ -11,20 +11,9 @@ from api.dependencies import get_current_user_id, get_db_session
 router = APIRouter(tags=["Tasks"])
 
 # -------------------------------
-# Explicit OPTIONS handler for CORS preflight
-# -------------------------------
-# @router.options("/{path:path}")
-# def preflight_handler(path: str):
-#     """
-#     Handles OPTIONS requests for CORS preflight on all task endpoints.
-#     """
-#     return Response(status_code=200)
-
-
-# -------------------------------
 # Get all tasks for current user
 # -------------------------------
-@router.get("/tasks", response_model=List[TaskRead])
+@router.get("/", response_model=List[TaskRead])
 def get_user_tasks(
     current_user_id: UUID = Depends(get_current_user_id),
     session: Session = Depends(get_db_session)
@@ -35,7 +24,7 @@ def get_user_tasks(
 # -------------------------------
 # Create a new task
 # -------------------------------
-@router.post("/tasks", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
 def create_task(
     task_data: TaskCreate,
     current_user_id: UUID = Depends(get_current_user_id),
@@ -47,7 +36,7 @@ def create_task(
 # -------------------------------
 # Get a specific task by ID
 # -------------------------------
-@router.get("/tasks/{task_id}", response_model=TaskRead)
+@router.get("/{task_id}", response_model=TaskRead)
 def get_task(
     task_id: UUID,
     current_user_id: UUID = Depends(get_current_user_id),
@@ -62,7 +51,7 @@ def get_task(
 # -------------------------------
 # Update a task by ID
 # -------------------------------
-@router.put("/tasks/{task_id}", response_model=TaskRead)
+@router.put("/{task_id}", response_model=TaskRead)
 def update_task(
     task_id: UUID,
     task_data: TaskUpdate,
@@ -78,7 +67,7 @@ def update_task(
 # -------------------------------
 # Delete a task by ID
 # -------------------------------
-@router.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_task(
     task_id: UUID,
     current_user_id: UUID = Depends(get_current_user_id),
@@ -93,7 +82,7 @@ def delete_task(
 # -------------------------------
 # Toggle task completion
 # -------------------------------
-@router.patch("/tasks/{task_id}/toggle", response_model=TaskRead)
+@router.patch("/{task_id}/toggle", response_model=TaskRead)
 def toggle_task_completion(
     task_id: UUID,
     current_user_id: UUID = Depends(get_current_user_id),
