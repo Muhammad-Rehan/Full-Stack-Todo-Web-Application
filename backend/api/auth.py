@@ -16,7 +16,7 @@ from database import get_session
 from config import settings
 from services.user_service import UserService
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(tags=["Authentication"])
 
 # -------------------------------
 # Signup endpoint
