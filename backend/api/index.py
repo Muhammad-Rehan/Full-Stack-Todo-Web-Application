@@ -49,6 +49,12 @@ def create_app() -> FastAPI:
     # -------------------------------
     # Custom middleware
     # -------------------------------
+    @app.middleware("http")
+    async def log_requests(request, call_next):
+        logger.info(f"Request path: {request.url.path}")
+        response = await call_next(request)
+        return response
+
     app.add_middleware(PerformanceMonitoringMiddleware)
 
     logger.info(f"CORS allowed origins: {ALLOWED_ORIGINS}")
