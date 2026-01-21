@@ -43,6 +43,11 @@ def signup(user_data: UserCreate, session: Session = Depends(get_session)):
     }
 
 
+import logging
+
+# Configure logger
+logger = logging.getLogger(__name__)
+
 # -------------------------------
 # Signin endpoint
 # -------------------------------
@@ -51,28 +56,39 @@ def signin(user_data: UserCreate, session: Session = Depends(get_session)):
     """
     Authenticate a user and return JWT token.
     """
-    user = UserService.authenticate_user(
-        session,
-        user_data.email,
-        user_data.password,
-    )
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+    try:
+        logger.info(f"Attempting to sign in user: {user_data.email}")
+        user = UserService.authenticate_user(
+            session,
+            user_data.email,
+            user_data.password,
         )
 
-    access_token_expires = timedelta(
-        minutes=settings.jwt_access_token_expire_minutes
-    )
-    access_token = create_access_token(
-        data={"sub": str(user.user_id)},
-        expires_delta=access_token_expires,
-    )
+        if not user:
+            logger.warning(f"Failed authentication for user: {user_data.email}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect email or password",
+            )
 
-    return {
-        "user_id": str(user.user_id),
-        "email": user.email,
-        "token": access_token,
-    }
+        logger.info(f"User authenticated: {user_data.email}")
+        access_token_expires = timedelta(
+            minutes=settings.jwt_access_token_expire_minutes
+        )
+        access_token = create_access_token(
+            data={"sub": str(user.user_id)},
+            expires_delta=access_token_expires,
+        )
+
+        logger.info(f"Access token created for user: {user_data.email}")
+        return {
+            "user_id": str(user.user_id),
+            "email": user.email,
+            "token": access_token,
+        }
+    except Exception as e:
+        logger.error(f"An unexpected error occurred during signin for user {user_data.email}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An internal server error occurred."
+        )
