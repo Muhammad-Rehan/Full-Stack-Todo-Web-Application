@@ -31,8 +31,11 @@ class UserService:
                 detail="User with this email already exists",
             )
 
+        # Truncate password to 72 bytes for bcrypt compatibility
+        safe_password = user_data.password[:72]
+
         # Hash password (bcrypt-safe)
-        hashed_password = get_password_hash(user_data.password)
+        hashed_password = get_password_hash(safe_password)
 
         # Create DB user
         db_user = User(
@@ -69,7 +72,10 @@ class UserService:
             select(User).where(User.email == email)
         ).first()
 
-        if not db_user or not verify_password(password, db_user.password_hash):
+        # Truncate password to 72 bytes for bcrypt compatibility
+        safe_password = password[:72]
+
+        if not db_user or not verify_password(safe_password, db_user.password_hash):
             return None
 
         user_read = UserRead(
