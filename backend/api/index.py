@@ -57,8 +57,8 @@ def create_app() -> FastAPI:
     # Routers
     # -------------------------------
     # CORRECT
-    app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
-    app.include_router(tasks_router, prefix="/tasks", tags=["Tasks"])
+    app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+    app.include_router(tasks_router, prefix="/api/tasks", tags=["Tasks"])
 
 
     # -------------------------------
